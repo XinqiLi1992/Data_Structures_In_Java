@@ -34,12 +34,15 @@ public class MergeSort {
 
     public static <E extends Comparable<E>> void sortB2U(E[] arr) {
         E[] temp = Arrays.copyOf(arr, arr.length);
-        sortB2U(arr, 0, arr.length - 1, temp);
-    }
-
-    private static <E extends Comparable<E>> void sortB2U(E[] arr, int l, int r, E[] temp) {
         int n = arr.length;
-        for (int s = 1; s < n; s+=s) {
+
+        // 先对[i, i + 15] 的区间进行插入排序
+        for (int i = 0; i < n; i += 16) {
+            InsertionSort.sort(arr, i, Math.min(i + 15, n - 1));
+        }
+
+        // 从 16 开始
+        for (int s = 16; s < n; s+=s) {
             // [i, i + s - 1] [i + s, i + s + s - 1]
             for (int i = 0; i + s < n; i = i + s + s) {
                 if (arr[i + s - 1].compareTo(arr[i + s]) > 0) {
