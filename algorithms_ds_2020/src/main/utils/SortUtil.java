@@ -2,6 +2,7 @@ package main.utils;
 
 import main.algorithms.sort.InsertionSort;
 import main.algorithms.sort.MergeSort;
+import main.algorithms.sort.QuickSort;
 import main.algorithms.sort.SelectionSort;
 
 public class SortUtil {
@@ -26,6 +27,8 @@ public class SortUtil {
             MergeSort.sort(arr);
         } else if (sortName.equals("MergeSortB2U")) {
             MergeSort.sortB2U(arr);
+        } else if (sortName.equals("QuickSort")) {
+            QuickSort.sort(arr);
         }
         long endTime = System.nanoTime();
         double time = (endTime - startTime) / 1000000000.0;
