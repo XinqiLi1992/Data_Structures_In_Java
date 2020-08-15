@@ -3,6 +3,7 @@ package main.algorithms.sort;
 import main.utils.ArrayGenerator;
 import main.utils.SortUtil;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class QuickSort {
@@ -20,7 +21,6 @@ public class QuickSort {
         sort(arr, p + 1, r, random);
     }
 
-
     private static <E extends Comparable<E>> int partition(E[] arr, int l, int r, Random random) {
         int p = l + random.nextInt(r - l + 1);
         swap(arr, l, p);
@@ -37,6 +37,43 @@ public class QuickSort {
         return j;
     }
 
+    public static <E extends Comparable<E>> void sort2ways(E[] arr) {
+        Random random = new Random();
+        sort2ways(arr, 0, arr.length - 1, random);
+    }
+
+    public static <E extends Comparable<E>> void sort2ways(E[] arr, int l, int r, Random random) {
+        if (l >= r) return;
+        int p = partition2(arr, l, r, random);
+        sort2ways(arr, l, p - 1, random);
+        sort2ways(arr, p + 1, r, random);
+    }
+
+    private static <E extends Comparable<E>> int partition2(E[] arr, int l, int r, Random random) {
+        int p = l + random.nextInt(r - l + 1);
+        swap(arr, l, p);
+
+        int i = l + 1;
+        int j = r;
+        while (true) {
+            while(i <= j && arr[i].compareTo(arr[l]) < 0) {
+                i++;
+            }
+            while(j >= i && arr[j].compareTo(arr[l]) > 0) {
+                j--;
+            }
+            if (i >= j) {
+                break;
+            }
+            swap(arr, i, j);
+            i++;
+            j--;
+        }
+        swap(arr, l, j);
+        return j;
+    }
+
+
     private static <E> void swap(E[] arr, int l,int r) {
         E temp = arr[l];
         arr[l] = arr[r];
@@ -44,15 +81,25 @@ public class QuickSort {
     }
 
     public static void main(String[] args) {
-        int n = 1000000;
-        Integer[] arr = ArrayGenerator.generateRandomArray(n, n);
-        Integer[] arr2 = ArrayGenerator.generateRandomArray(n, n);
-        SortUtil.sortTest("MergeSort", arr);
-        SortUtil.sortTest("QuickSort", arr2);
+        int n = 100000;
 
+        System.out.println("Random array: ");
+        Integer[] arr = ArrayGenerator.generateRandomArray(n, n);
+        Integer[] arr2 = Arrays.copyOf(arr, arr.length);
+        SortUtil.sortTest("QuickSort", arr);
+        SortUtil.sortTest("QuickSort2Ways", arr2);
+
+        System.out.println("Sorted array: ");
         arr = ArrayGenerator.generateSortedArray(n);
-        arr2 = ArrayGenerator.generateSortedArray(n);
-        SortUtil.sortTest("MergeSort", arr);
-        SortUtil.sortTest("QuickSort", arr2);
+        arr2 = Arrays.copyOf(arr, arr.length);
+        SortUtil.sortTest("QuickSort", arr);
+        SortUtil.sortTest("QuickSort2Ways", arr2);
+
+        System.out.println("Same value array: ");
+        arr = ArrayGenerator.generateRandomArray(n, 1);
+        arr2 = Arrays.copyOf(arr, arr.length);
+        SortUtil.sortTest("QuickSort", arr);
+        SortUtil.sortTest("QuickSort2Ways", arr2);
+
     }
 }

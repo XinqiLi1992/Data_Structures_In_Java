@@ -29,6 +29,8 @@ public class SortUtil {
             MergeSort.sortB2U(arr);
         } else if (sortName.equals("QuickSort")) {
             QuickSort.sort(arr);
+        } else if (sortName.equals("QuickSort2Ways")) {
+            QuickSort.sort2ways(arr);
         }
         long endTime = System.nanoTime();
         double time = (endTime - startTime) / 1000000000.0;
