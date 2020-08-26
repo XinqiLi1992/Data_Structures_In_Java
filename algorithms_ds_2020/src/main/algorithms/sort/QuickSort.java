@@ -73,6 +73,40 @@ public class QuickSort {
         return j;
     }
 
+    public static <E extends Comparable<E>> void sort3ways(E[] arr) {
+        Random random = new Random();
+        sort3ways(arr, 0, arr.length - 1, random);
+    }
+
+    public static <E extends Comparable<E>> void sort3ways(E[] arr, int l, int r, Random random) {
+        if (l >= r) return;
+        int p = l + random.nextInt(1 + r - l);
+        swap(arr, l, p);
+
+        // arr[l + 1, lt] < v, arr[lt + 1, i - 1] == v, arr[gt, r] > v
+        int lt = l;
+        int i = l + 1;
+        int gt = r + 1;
+
+        while (i < gt) {
+            if (arr[i].compareTo(arr[l]) < 0) {
+                lt++;
+                swap(arr, i, lt);
+                i++;
+            } else if (arr[i].compareTo(arr[l]) > 0) {
+                gt--;
+                swap(arr, i, gt);
+            } else {
+                i++;
+            }
+        }
+
+        swap(arr, l, lt);
+
+        // arr[l, lt - 1] < v, arr[lt, gt - 1] == v, arr[gt, r] > v
+        sort3ways(arr, l, lt - 1, random);
+        sort3ways(arr, gt, r, random);
+    }
 
     private static <E> void swap(E[] arr, int l,int r) {
         E temp = arr[l];
@@ -86,20 +120,26 @@ public class QuickSort {
         System.out.println("Random array: ");
         Integer[] arr = ArrayGenerator.generateRandomArray(n, n);
         Integer[] arr2 = Arrays.copyOf(arr, arr.length);
+        Integer[] arr3 = Arrays.copyOf(arr, arr.length);
+
         SortUtil.sortTest("QuickSort", arr);
         SortUtil.sortTest("QuickSort2Ways", arr2);
+        SortUtil.sortTest("QuickSort3Ways", arr3);
 
         System.out.println("Sorted array: ");
         arr = ArrayGenerator.generateSortedArray(n);
         arr2 = Arrays.copyOf(arr, arr.length);
+        arr3 = Arrays.copyOf(arr, arr.length);
         SortUtil.sortTest("QuickSort", arr);
         SortUtil.sortTest("QuickSort2Ways", arr2);
+        SortUtil.sortTest("QuickSort3Ways", arr3);
 
         System.out.println("Same value array: ");
         arr = ArrayGenerator.generateRandomArray(n, 1);
         arr2 = Arrays.copyOf(arr, arr.length);
+        arr3 = Arrays.copyOf(arr, arr.length);
         SortUtil.sortTest("QuickSort", arr);
         SortUtil.sortTest("QuickSort2Ways", arr2);
-
+        SortUtil.sortTest("QuickSort3Ways", arr3);
     }
 }
