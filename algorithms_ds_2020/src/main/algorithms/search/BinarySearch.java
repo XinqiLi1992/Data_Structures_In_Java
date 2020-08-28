@@ -55,14 +55,19 @@ public class BinarySearch {
         return r;
     }
 
-    // > target, 返回最小值索引
-    // == target，返回最大索引
-    public static <E extends  Comparable<E>> int ceil(E[] data, E target) {
-        int u = upper(data, target);
-        if (u - 1 >= 0 && data[u - 1].compareTo(target) == 0) {
-            return u - 1;
+    // < target 的最大值
+    public static <E extends Comparable<E>> int lower(E[] data, E target) {
+        int l = -1;
+        int r = data.length - 1;
+        while (l < r) {
+            int mid = l + (r - l + 1) / 2;
+            if (data[mid].compareTo(target) < 0) {
+                l = mid;
+            } else {
+                r = mid - 1;
+            }
         }
-        return u;
+        return l;
     }
 
     public static <E extends  Comparable<E>> int lowerCeil(E[] data, E target) {
@@ -79,6 +84,42 @@ public class BinarySearch {
         return r;
     }
 
+    // 不存在 返回 > target, 返回最小值索引
+    // 存在 返回 = target 最大索引
+    public static <E extends  Comparable<E>> int upperCeil(E[] data, E target) {
+        int u = upper(data, target);
+        if (u - 1 >= 0 && data[u - 1].compareTo(target) == 0) {
+            return u - 1;
+        }
+        return u;
+    }
+
+    // 不存在 返回 < target 最大值
+    // 存在 返回 = target 最小值
+    public static <E extends Comparable<E>> int lowerFloor(E[] data, E target) {
+        int l = lower(data, target);
+        if (l + 1 < data.length && data[l + 1].compareTo(target) == 0) {
+            return l + 1;
+        }
+        return l;
+    }
+
+    // 不存在 返回 < target 最大值
+    // 存在 返回 = target 最大值
+    public static <E extends Comparable<E>> int upperFloor(E[] data, E target) {
+        int l = -1;
+        int r = data.length - 1;
+        while (l < r) {
+            int mid = l + (r - l + 1) / 2;
+            if (data[mid].compareTo(target) <= 0) {
+                l = mid;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return l;
+    }
+
     public static void main(String[] args) {
         Integer[] arr = {1, 1, 3, 3, 5, 5};
         for (int i = 0; i <= 6; i++) {
@@ -86,7 +127,7 @@ public class BinarySearch {
         }
         System.out.println();
         for (int i = 0; i <= 6; i++) {
-            System.out.print(BinarySearch.ceil(arr, i) + " ");
+            System.out.print(BinarySearch.upperCeil(arr, i) + " ");
         }
         System.out.println();
 
@@ -94,5 +135,21 @@ public class BinarySearch {
             System.out.print(BinarySearch.lowerCeil(arr, i) + " ");
         }
         System.out.println();
+
+        for (int i = 0; i <= 6; i++) {
+            System.out.print(BinarySearch.lower(arr, i) + " ");
+        }
+        System.out.println();
+
+        for (int i = 0; i <= 6; i++) {
+            System.out.print(BinarySearch.lowerFloor(arr, i) + " ");
+        }
+        System.out.println();
+
+        for (int i = 0; i <= 6; i++) {
+            System.out.print(BinarySearch.upperFloor(arr, i) + " ");
+        }
+        System.out.println();
+
     }
 }
