@@ -1,7 +1,9 @@
 package main.ds.tree;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Stack;
 
 public class BinarySearchTree<E extends Comparable<E>> {
@@ -172,6 +174,113 @@ public class BinarySearchTree<E extends Comparable<E>> {
         }
     }
 
+    public E minimum() {
+        if (size == 0) {
+            throw new IllegalArgumentException("Binary Search Tree is empty.");
+        }
+        return minimum(root).e;
+    }
+
+    public Node minimum(Node node) {
+        if (node.left == null) {
+            return node;
+        }
+        return minimum(node.left);
+    }
+
+    public E maximum() {
+        if (size == 0) {
+            throw new IllegalArgumentException("Binary Search Tree is empty.");
+        }
+        return maximum(root).e;
+    }
+
+    public Node maximum(Node node) {
+        if (node.right == null) {
+            return node;
+        }
+        return maximum(node.right);
+    }
+
+    public E removeMin() {
+        E ret = minimum();
+        root = removeMin(root);
+        return ret;
+    }
+
+    // remove min from a tree whose root is node
+    // return the new root after the removal
+    public Node removeMin(Node node) {
+        if (node.left == null) {
+            Node rightNode = node.right;
+            node.right = null;
+            size--;
+            return rightNode;
+        }
+
+        node.left = removeMin(node.left);
+        return node;
+    }
+
+    public E removeMax() {
+        E ret = maximum();
+        root = removeMax(root);
+        return ret;
+    }
+
+    public Node removeMax(Node node) {
+        if (node.right == null) {
+            Node leftNode = node.left;
+            node.left = null;
+            size--;
+            return leftNode;
+        }
+
+        node.right = removeMax(node.right);
+        return node;
+    }
+
+    public void remove(E e) {
+        root = remove(root, e);
+    }
+
+    public Node remove(Node node, E e) {
+        if (node == null) {
+            return null;
+        }
+
+        if (e.compareTo(node.e) < 0) {
+            node.left = remove(node.left, e);
+            return node;
+        }
+
+        if (e.compareTo(node.e) > 0) {
+            node.right = remove(node.right, e);
+            return node;
+        }
+
+        if (node.left == null) {
+            Node rightNode = node.right;
+            node.right = null;
+            size--;
+            return rightNode;
+        }
+
+        if (node.right == null) {
+            Node leftNode = node.left;
+            node.left = null;
+            size--;
+            return leftNode;
+        }
+
+        Node successor = minimum(node.right);
+        successor.right = removeMin(node.right);
+        successor.left = node.left;
+        node.left = node.right = null;
+
+        return successor;
+    }
+
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
@@ -200,25 +309,41 @@ public class BinarySearchTree<E extends Comparable<E>> {
 
     public static void main(String[] args) {
         BinarySearchTree<Integer> bst = new BinarySearchTree<>();
-        int[] nums = {5, 3, 6, 8, 4, 2};
-        for(int num : nums) {
-            bst.add(num);
+        Random random = new Random();
+        int n = 1000;
+        for (int i = 0; i < n; i++) {
+            bst.add(random.nextInt(10000));
         }
-        bst.preOrder();
-        System.out.println();
 
-        bst.preOrderNR();
-        System.out.println();
+        ArrayList<Integer> nums = new ArrayList<>();
+        while(!bst.isEmpty()) {
+            nums.add(bst.removeMin());
+        }
 
-        bst.inOrder();
-        System.out.println();
+        System.out.println(nums);
+        for (int i = 1; i < nums.size(); i++) {
+            if (nums.get(i - 1) > nums.get(i)) {
+                throw new IllegalArgumentException("Error");
+            }
+        }
+        System.out.println("removeMin test completed");
 
-        bst.postOrder();
-        System.out.println();
+        for (int i = 0; i < n; i++) {
+            bst.add(random.nextInt(10000));
+        }
 
-        bst.levelOrder();
-        System.out.println();
+        ArrayList<Integer> nums1 = new ArrayList<>();
+        while(!bst.isEmpty()) {
+            nums1.add(bst.removeMax());
+        }
 
-        System.out.println(bst);
+        System.out.println(nums1);
+        for (int i = 1; i < nums1.size(); i++) {
+            if (nums1.get(i - 1) < nums1.get(i)) {
+                throw new IllegalArgumentException("Error");
+            }
+        }
+        System.out.println("removeMax test completed");
+
     }
 }
