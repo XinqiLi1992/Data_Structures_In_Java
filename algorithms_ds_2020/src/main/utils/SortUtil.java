@@ -32,6 +32,10 @@ public class SortUtil {
             QuickSort.sort2ways(arr);
         }  else if (sortName.equals("QuickSort3Ways")) {
             QuickSort.sort3ways(arr);
+        }  else if (sortName.equals("HeapSort")) {
+            HeapSort.sort(arr);
+        }  else if (sortName.equals("HeapSort2")) {
+            HeapSort.sort2(arr);
         }
         long endTime = System.nanoTime();
         double time = (endTime - startTime) / 1000000000.0;
