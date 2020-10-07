@@ -1,5 +1,6 @@
 package main.utils;
 
+import jdk.nashorn.tools.Shell;
 import main.algorithms.sort.*;
 
 public class SortUtil {
@@ -44,6 +45,8 @@ public class SortUtil {
             BubbleSort.sort3(arr);
         }  else if (sortName.equals("BubbleSort4")) {
             BubbleSort.sort4(arr);
+        }  else if (sortName.equals("ShellSort")) {
+            ShellSort.sort(arr);
         }
         long endTime = System.nanoTime();
         double time = (endTime - startTime) / 1000000000.0;
